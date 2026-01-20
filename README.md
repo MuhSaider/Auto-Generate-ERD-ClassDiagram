@@ -1,75 +1,111 @@
-# 🚀 SQL to Draw.io Diagram Generator (ERD & Class Diagram)
+# SQL to Draw.io Diagram Generator (ERD & Class Diagram)
 
-Sistem otomatisasi berbasis Web (Flask) untuk mengubah skema database SQL (khususnya dump phpMyAdmin) menjadi diagram **ERD (Notasi Chen)** dan **Class Diagram (UML)** dalam format asli `.drawio`.
+Sistem otomatisasi berbasis Web (Flask) untuk mengubah skema database SQL menjadi diagram **ERD (Notasi Chen)** dan **Class Diagram (UML)** dalam format `.drawio` yang dapat diedit sepenuhnya.
 
-Berbeda dengan generator diagram lainnya yang menghasilkan gambar statis, proyek ini menghasilkan file XML Draw.io yang **dapat diedit sepenuhnya** (drag-and-drop, ubah warna, dan modifikasi teks) di [app.diagrams.net](https://app.diagrams.net).
+## Deskripsi
 
-## 🌟 Fitur Unggulan
+Proyek ini mengubah dump SQL dari phpMyAdmin menjadi file XML Draw.io yang fleksibel. Berbeda dengan generator lain yang menghasilkan gambar statis, hasil dari aplikasi ini dapat diedit sepenuhnya (drag-and-drop, ubah warna, modifikasi teks) di [app.diagrams.net](https://app.diagrams.net).
 
-- **Native Draw.io Format**: Hasil berupa file `.drawio` yang fleksibel, bukan gambar mati (`.png`/`.jpg`).
-- **ERD Notasi Chen**: Visualisasi otomatis entitas (kotak), atribut (oval), dan relasi (belah ketupat).
-- **Class Diagram UML**: Pemetaan tabel menjadi Class lengkap dengan atribut, detail tipe data (termasuk ENUM dan INT), serta simulasi method CRUD.
-- **Smart Connection**: Garis relasi otomatis menempel pada objek dan menggunakan *Orthogonal Edge Style* (garis siku) agar tetap rapi saat objek digeser.
-- **Deteksi Kardinalitas**: Otomatis menambahkan label kardinalitas `1` ke `N` berdasarkan *Foreign Key*.
-- **Antarmuka Web**: Dilengkapi dengan dashboard sederhana berbasis Flask untuk memudahkan proses *copy-paste* SQL.
+## Fitur
 
-## 🛠️ Teknologi yang Digunakan
+- **Native Draw.io Format**: Menghasilkan file `.drawio` yang dapat diedit, bukan gambar statis (`.png`/`.jpg`)
+- **ERD Notasi Chen**: Visualisasi entitas, atribut, dan relasi dengan notasi Chen standard
+- **Class Diagram UML**: Pemetaan tabel menjadi class dengan atribut, tipe data, dan method CRUD
+- **Smart Connection**: Relasi otomatis dengan Orthogonal Edge Style yang rapi
+- **Deteksi Kardinalitas**: Label kardinalitas (1:N) berdasarkan Foreign Key
+- **Antarmuka Web**: Dashboard Flask untuk memudahkan input SQL
+
+## Persyaratan
+
+- Python 3.10 atau lebih tinggi
+- pip (Python package manager)
+
+## Teknologi
 
 - **Python 3.10+**
-- **Flask**: Sebagai penggerak antarmuka web.
-- **XML DOM (minidom)**: Untuk membangun struktur XML Draw.io dari nol.
-- **Bootstrap 5**: Untuk tampilan UI website yang bersih dan responsif.
+- **Flask**: Framework web untuk antarmuka
+- **XML DOM (minidom)**: Untuk membangun struktur XML Draw.io
+- **Bootstrap 5**: Framework UI responsif
 
-## 📁 Struktur Proyek
+## Struktur Proyek
 
-```text
+```
 .
-├── app.py                      # Server Web Flask & Integrasi
-├── auto_erd.py                 # Engine Generator ERD (Chen Notation)
-├── auto_classdiagram_drawio.py # Engine Generator Class Diagram (UML)
+├── app.py                           # Server Flask utama
+├── auto_erd.py                      # Generator ERD (notasi Chen)
+├── auto_classdiagram_drawio.py      # Generator Class Diagram (UML)
+├── auto_drawio.py                   # Utility Draw.io
+├── generate_all.py                  # Script untuk generate semua
+├── database.sql                     # Contoh database
+├── database_example.sql             # Contoh database lain
+├── class_diagram_detail.drawio      # Template class diagram
 ├── templates/
-│   └── index.html              # Interface untuk Input SQL
-├── static/                     # Folder penyimpanan hasil generate
-└── README.md                   # Dokumentasi
-🚀 Cara Instalasi
-Clone Repositori:
+│   └── index.html                   # Interface web
+├── static/
+│   ├── auto_drawio.drawio           # Hasil generate auto_drawio
+│   └── auto_classdiagram_drawio.drawio  # Hasil generate class diagram
+├── __pycache__/                     # Cache Python
+└── README.md                        # Dokumentasi ini
+```## Instalasi
 
-Bash
+### 1. Clone Repository
 
-git clone [https://github.com/username/sql-to-drawio.git](https://github.com/username/sql-to-drawio.git)
+```bash
+git clone https://github.com/username/sql-to-drawio.git
 cd sql-to-drawio
-Install Flask:
+```
 
-Bash
+### 2. Install Dependensi
 
+```bash
 pip install flask
-Jalankan Aplikasi:
+```
 
-Bash
+### 3. Jalankan Aplikasi
 
+```bash
 python app.py
-Akses di Browser: Buka http://127.0.0.1:5000.
+```
 
-📖 Cara Penggunaan
-Export database kamu dari phpMyAdmin (pilih format SQL).
+### 4. Akses Browser
 
-Salin seluruh isi file SQL tersebut.
+Buka browser dan akses: `http://127.0.0.1:5000`
 
-Tempelkan (Paste) pada kotak teks di website.
+## Cara Penggunaan
 
-Klik tombol Generate.
+1. **Export Database**: Export database dari phpMyAdmin dalam format SQL
+2. **Salin SQL**: Salin seluruh isi file SQL
+3. **Paste ke Web**: Tempelkan SQL di kotak teks website
+4. **Generate**: Klik tombol "Generate"
+5. **Download**: Unduh file `.drawio` dan buka di [app.diagrams.net](https://app.diagrams.net)
 
-Unduh file .drawio dan buka melalui app.diagrams.net.
+## Detail Teknis
 
-📊 Detail Teknis Generator
-ERD (Notasi Chen)
-Generator mendeteksi tabel sebagai Entitas dan kolom sebagai Atribut. Relasi dideteksi melalui perintah ALTER TABLE ... ADD CONSTRAINT yang menghubungkan antar tabel.
+### ERD (Notasi Chen)
 
-Class Diagram (UML)
-Generator membagi setiap class menjadi 3 kompartemen:
+Generator mendeteksi:
+- **Entitas**: Setiap tabel dalam database
+- **Atribut**: Setiap kolom dalam tabel
+- **Relasi**: Dideteksi melalui perintah `ALTER TABLE ... ADD CONSTRAINT`
 
-Header: Nama tabel.
+Visualisasi menggunakan notasi Chen standard dengan bentuk entitas (kotak), atribut (oval), dan relasi (belah ketupat).
 
-Attributes: Daftar kolom beserta tipe datanya (seperti int(11) atau enum).
+### Class Diagram (UML)
 
-Methods: Simulasi operasi dasar create(), update(), dan delete().
+Setiap class terdiri dari 3 kompartemen:
+
+1. **Header**: Nama tabel
+2. **Attributes**: Daftar kolom dengan tipe data (int, varchar, enum, dll)
+3. **Methods**: Operasi dasar (create, read, update, delete)
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah MIT License.
+
+## Author
+
+Dikembangkan oleh tim pengembang.
+
+## Kontribusi
+
+Kontribusi sangat diterima! Silakan buat Pull Request dengan perubahan yang Anda usulkan.
