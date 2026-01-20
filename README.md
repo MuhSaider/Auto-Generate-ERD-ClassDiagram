@@ -94,18 +94,8 @@ Visualisasi menggunakan notasi Chen standard dengan bentuk entitas (kotak), atri
 
 Setiap class terdiri dari 3 kompartemen:
 
-1. **Header**: Nama tabel
-2. **Attributes**: Daftar kolom dengan tipe data (int, varchar, enum, dll)
-3. **Methods**: Operasi dasar (create, read, update, delete)
+Header: Nama tabel.
 
-## Lisensi
+Attributes: Daftar kolom beserta tipe datanya (seperti int(11) atau enum).
 
-Proyek ini dilisensikan di bawah MIT License.
-
-## Author
-
-Dikembangkan oleh tim pengembang.
-
-## Kontribusi
-
-Kontribusi sangat diterima! Silakan buat Pull Request dengan perubahan yang Anda usulkan.
+Methods: Simulasi operasi dasar create(), update(), dan delete().
