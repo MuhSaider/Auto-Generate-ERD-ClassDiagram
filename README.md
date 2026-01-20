@@ -73,3 +73,5 @@ Header: Nama tabel.
 Attributes: Daftar kolom beserta tipe datanya (seperti int(11) atau enum).
 
 Methods: Simulasi operasi dasar create(), update(), dan delete().
+
+<img width="1286" height="587" alt="image" src="https://github.com/user-attachments/assets/db8ef770-fd6b-4e33-845c-d2e17e545f64" />
